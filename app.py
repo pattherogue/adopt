@@ -1,6 +1,6 @@
 # Import necessary modules and packages
 from flask import Flask, url_for, render_template, redirect, flash, jsonify
-from flask_debugtoolbar import DebugToolbarExtension
+
 from models import db, connect_db, Pet
 from forms import AddPetForm, EditPetForm
 
@@ -16,10 +16,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Connect the database and create tables
 connect_db(app)
-db.create_all()
 
-# Enable Flask Debug Toolbar for debugging
-toolbar = DebugToolbarExtension(app)
+def create_app():
+    """Create the Flask app and initialize database."""
+    with app.app_context():
+        # Create all database tables
+        db.create_all()
+
+# Call the function to create app and initialize database
+create_app()
 
 ##############################################################################
 
